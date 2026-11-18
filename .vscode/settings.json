@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "*.jsp": "jsp"
+    },
+    "emmet.includeLanguages": {
+        "jsp": "html"
+    },
+    "jsp-support.javaSourcePaths": [
+        "src",
+        "src/main/java"
+    ]
+}
