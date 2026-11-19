@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ClaudeCodeTabState">
+    <option name="tabSessions">
+      <map>
+        <entry key="0">
+          <value>
+            <TabSessionState>
+              <option name="projectPath" value="D:\Nam_4\PTTKHTTT\code\GaraMan" />
+              <option name="provider" value="claude" />
+              <option name="sessionId" value="9b0e7ebb-c02e-4e19-9c67-205096601b60" />
+              <option name="cwd" value="D:\Nam_4\PTTKHTTT\code\GaraMan" />
+              <option name="model" value="claude-opus-5-5[1m]" />
+              <option name="permissionMode" value="default" />
+              <option name="reasoningEffort" value="medium" />
+              <option name="claudeSupplierId" value="__local_settings_json__" />
+              <option name="codexSupplierId" value="__session_supplier_unavailable__" />
+              <option name="ompApprovalMode" value="" />
+            </TabSessionState>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

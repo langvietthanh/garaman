@@ -1,0 +1,198 @@
+/* ===== GaraMan - Module 2: Nhan xe vao sua =====
+   Dung chung cho 10 trang trong WebContent/view/sales (nhung bang ../../css/garaman8.css).
+   Mau chu dao: #2563eb (xanh). Doi mau ca he thong: tim va thay #2563eb.
+   Muon sua 1 phan tu rieng: them style="..." ngay tren the do (uu tien hon file nay). */
+
+/* ---------- Trang ---------- */
+body {
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    font-size: 15px;
+    color: #1f2937;
+    background-color: #f1f5f9;
+    margin: 0;
+}
+.page {
+    width: 1040px;
+    margin: 32px auto;
+    padding: 28px 36px 32px 36px;
+    background-color: white;
+    border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
+}
+h2 {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 24px 0;
+    padding-bottom: 16px;
+    border-bottom: 3px solid #2563eb;
+}
+h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #0f172a;
+    line-height: 40px;      /* bang chieu cao nut, chu va nut nam cung hang */
+    margin: 24px 0 8px 0;
+    overflow: hidden;       /* chua nut float:right ben trong */
+}
+
+/* ---------- Hop thong tin ---------- */
+.info-box {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid #2563eb;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    line-height: 1.9;
+}
+.success-box {
+    background-color: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    border-radius: 10px;
+    color: #047857;
+    font-weight: 600;
+    padding: 14px 18px;
+    margin-bottom: 14px;
+}
+.total-box {
+    background-color: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 10px;
+    padding: 16px;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1e3a8a;
+}
+
+/* ---------- Bang du lieu ---------- */
+table.data {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 8px;
+    border: 1px solid #e2e8f0;
+}
+table.data th {
+    background-color: #f1f5f9;
+    color: #475569;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 11px 12px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+table.data td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #e2e8f0;
+}
+table.data tr:hover td { background-color: #f8fafc; }   /* to sang dong khi re chuot */
+table.data .center { text-align: center; }               /* o can giua: TT, Ma, Chon... */
+table.data .money  { text-align: right; white-space: nowrap; }            /* o tien: can phai */
+
+/* ---------- Form nhap lieu ---------- */
+table.form td {
+    padding: 8px 16px 8px 0;
+    font-weight: 600;
+    color: #334155;
+}
+input[type=text], input[type=number], textarea {
+    font-family: inherit;
+    font-size: 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+input[type=text]   { width: 360px; height: 40px; padding: 0 12px; }
+input[type=number] { width: 70px;  height: 34px; padding: 0 8px; text-align: center; }
+textarea           { width: 100%;  height: 80px; padding: 10px 12px; }
+input[type=text]:focus, input[type=number]:focus, textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);    /* vien sang khi dang nhap */
+}
+input[type=radio], input[type=checkbox] {
+    width: 18px;
+    height: 18px;
+    accent-color: #2563eb;
+}
+.search-row {
+    margin-bottom: 18px;
+    font-weight: 600;
+}
+
+/* ---------- Nut ---------- */
+.btn {
+    height: 40px;
+    min-width: 140px;
+    padding: 0 20px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    background-color: #2563eb;
+    border: 1px solid #2563eb;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.btn:hover { background-color: #1d4ed8; }
+.btn:disabled {
+    background-color: #e2e8f0;
+    border-color: #e2e8f0;
+    color: #94a3b8;
+    cursor: not-allowed;
+}
+/* Nut ben trai (Quay lai / Huy bo) va nut "+ Them..." canh tieu de: kieu vien, nen trang */
+.actions .left, h3 .btn {
+    color: #2563eb;
+    background-color: white;
+}
+.actions .left:hover, h3 .btn:hover { background-color: #eff6ff; }
+.actions .left { color: #475569; border-color: #cbd5e1; }
+.btn-big {
+    width: 360px;
+    height: 64px;
+    font-size: 18px;
+    border-radius: 12px;
+}
+.btn-small {
+    display: inline-block;
+    padding: 4px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #dc2626;
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 6px;
+    text-decoration: none;
+}
+.btn-small:hover { background-color: #fee2e2; }
+.right { float: right; }
+.left  { float: left; }
+
+/* Hang nut cuoi trang: nut quay lai ben trai, nut xac nhan ben phai */
+.actions {
+    overflow: hidden;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid #e2e8f0;
+}
+
+/* ---------- Thong bao ---------- */
+.msg-error {
+    color: #b91c1c;
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-weight: 600;
+}
+.text-red { color: #dc2626; font-weight: 600; }
+.hint     { color: #64748b; font-size: 13px; }
+.btn-small.edit { color: #2563eb; background-color: #eff6ff; border-color: #bfdbfe; }   /* link "Sua": mau xanh */
+.search-row .btn + .btn { color: #2563eb; background-color: white; }   /* nut thu 2 canh o tim kiem (+ Them moi): kieu vien */
+table.data td:last-child { white-space: nowrap; }                       /* cot Thao tac/Chon: khong xuong dong */
+.required  { color: #dc2626; font-weight: 700; }   /* dau * truong bat buoc */

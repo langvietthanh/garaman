@@ -16,12 +16,13 @@ public class AppointmentDAO8 extends DAO {
     }
 
     /**
-     * Lay cac khung gio 30 phut con trong cua ngay da chon, sinh tu openTime - closeTime,
-     * bo cac khung da co lich hen (QD-03, QD-19).
-     * @return mang gio bat dau khung "HH:mm"; mang rong neu ngay nghi; null neu loi CSDL
+     * Lay tat ca khung gio 30 phut cua ngay da chon, sinh tu openTime - closeTime (QD-03, QD-19).
+     * Moi khung la mot Appointment8 co appointmentTime = gio bat dau khung;
+     * khung da co lich hen mang id cua lich hen do (id > 0), khung con trong co id = 0.
+     * @return mang khung gio; mang rong neu ngay nghi; null neu loi CSDL
      */
-    public String[] getAvailableTimeSlots(Date date) {
-        String[] kq = null;
+    public Appointment8[] getAvailableTimeSlots(Date date) {
+        Appointment8[] kq = null;
         String sqlWs = "SELECT openTime, closeTime FROM tblWorkSchedule8 WHERE workDate = ?";
         String sqlAp = "SELECT id, appointmentTime, status FROM tblAppointment8 WHERE DATE(appointmentTime) = ?";
         SimpleDateFormat hm = new SimpleDateFormat("HH:mm");
@@ -30,7 +31,7 @@ public class AppointmentDAO8 extends DAO {
             ps.setDate(1, new java.sql.Date(date.getTime()));
             ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
-                return new String[0]; // ngay nghi
+                return new Appointment8[0]; // ngay nghi
             }
             String open = rs.getString("openTime").substring(0, 5);
             String close = rs.getString("closeTime").substring(0, 5);
@@ -50,23 +51,23 @@ public class AppointmentDAO8 extends DAO {
                 booked.add(a);
             }
 
-            ArrayList<String> slots = new ArrayList<String>();
+            ArrayList<Appointment8> slots = new ArrayList<Appointment8>();
+            SimpleDateFormat ymdhm = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            String day = new SimpleDateFormat("yyyy-MM-dd").format(date);
             int start = Integer.parseInt(open.substring(0, 2)) * 60 + Integer.parseInt(open.substring(3));
             int end = Integer.parseInt(close.substring(0, 2)) * 60 + Integer.parseInt(close.substring(3));
             for (int t = start; t + 30 <= end; t += 30) {
                 String slot = String.format("%02d:%02d", t / 60, t % 60);
-                boolean taken = false;
+                Appointment8 found = null;
                 for (Appointment8 a : booked) {
                     if (hm.format(a.getAppointmentTime()).equals(slot)) {
-                        taken = true;
+                        found = a;
                         break;
                     }
                 }
-                if (!taken) {
-                    slots.add(slot);
-                }
+                slots.add(found != null ? found : new Appointment8(ymdhm.parse(day + " " + slot), null, null));
             }
-            kq = slots.toArray(new String[0]);
+            kq = slots.toArray(new Appointment8[0]);
         } catch (Exception e) {
             e.printStackTrace();
             kq = null;
