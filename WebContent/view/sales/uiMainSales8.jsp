@@ -2,13 +2,10 @@
 <%@ page import="model.*" %>
 <%
     Employee8 currentEmployee = (Employee8) session.getAttribute("currentEmployee");
-    if (currentEmployee == null) {
-        // shortcut: chua co module dang nhap -> gan nhan vien ban hang id=1 (du lieu mau); thay bang Employee8 dang nhap khi co login
-        currentEmployee = new Employee8();
-        currentEmployee.setId(1);
-        currentEmployee.setFullName("Lê Thị Hoa");
-        currentEmployee.setPosition("Bán hàng");
-        session.setAttribute("currentEmployee", currentEmployee);
+    // Nhan vien do doLogin8.jsp dua vao session; chua dang nhap hoac khong phai ban hang -> ve trang dang nhap
+    if (currentEmployee == null || !"Bán hàng".equals(currentEmployee.getPosition())) {
+        response.sendRedirect("../auth/uiLogin8.jsp");
+        return;
     }
     // Ve trang chu: xoa du lieu cua lan nhan xe truoc
     for (String k : new String[] {"customerList", "selectedCustomer", "customerCarList", "selectedCustomerCar",

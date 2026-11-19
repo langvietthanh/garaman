@@ -5,7 +5,7 @@
 2. Sửa mật khẩu MySQL trong `src/dao/DAO.java` (đang để `root`).
 3. Eclipse → Dynamic Web Project `GaraMan`, source folder `src`, content directory `WebContent`.
 4. Chép `mysql-connector-j-8.x.jar` vào `WebContent/WEB-INF/lib/`.
-5. Chạy trên Tomcat 9 hoặc 10 → mở `http://localhost:8080/GaraMan/` (vào `view/customer/uiMainMenu8.jsp`). Nhân viên bán hàng: `http://localhost:8080/GaraMan/view/sales/uiMainSales8.jsp`.
+5. Chạy trên Tomcat 9 hoặc 10 → mở `http://localhost:8080/GaraMan/` (vào `view/customer/uiMainMenu8.jsp`). Nhân viên bán hàng: đăng nhập tại `http://localhost:8080/GaraMan/view/auth/uiLogin8.jsp` (tài khoản mẫu `sales01` / `123456`).
 
 Lưu ý: máy chạy MySQL và Tomcat cùng múi giờ Việt Nam (URL kết nối dùng `serverTimezone=Asia/Ho_Chi_Minh`).
 
@@ -16,7 +16,7 @@ src/
   model/    các lớp thực thể xxx8          (gói model)
 WebContent/
   view/                                    (gói view, chia theo tác nhân)
-    auth/        đăng nhập (chưa cài đặt)
+    auth/        Đăng nhập nhân viên: uiLogin8 → doLogin8 (EmployeeDAO8.checkLogin) → sales/uiMainSales8
     customer/    Module 1 – Đặt lịch hẹn trực tuyến: uiMainMenu8 → uiDateSelection8 → uiTimeSlotSelection8 → uiCustomerInfo8 → uiBookingConfirmation8 → doSaveBooking8
     sales/       Module 2 – Nhận xe vào sửa: uiMainSales8 → uiCustomerSearch8 (→ uiAddNewCustomer8) → uiCarSelection8 (→ uiAddNewCar8) → uiRequestForm8 ⇄ uiServiceSelection8 / uiPartSelection8 / uiTechnicianAssignment8 → doSaveRequestForm8 → uiCarReceipt8; receiveCar8.jspf = hàm dùng chung
     statistic/   thống kê – quản lý (chưa cài đặt)

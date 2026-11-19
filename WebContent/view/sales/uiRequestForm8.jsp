@@ -81,10 +81,10 @@ Xe tiếp nhận: <span name="lblLicensePlate"><%= esc(car.getLicensePlate()) %>
 <% if (msg != null) { %><p class="msg-error"><%= msg %></p><% } %>
 
 <form action="uiRequestForm8.jsp" method="post">
-<h3>1. Danh sách Dịch vụ yêu cầu:
+<h3>1. Dịch vụ yêu cầu:
 <input type="submit" name="btnAddService" value="+ Thêm dịch vụ" class="btn right"></h3>
 <table name="tblServiceList" class="data">
-    <tr><th class="center">TT</th><th class="center">Mã</th><th>Tên dịch vụ</th><th class="money">Đơn giá</th><th class="money">Giảm giá</th><th class="money">Thành tiền</th><th>Ghi chú khuyến mãi</th><th class="center">Thao tác</th></tr>
+    <tr><th class="center">TT</th><th class="center">Mã</th><th>Tên dịch vụ</th><th class="money">Đơn giá</th><th class="money">Giảm giá</th><th class="money">Thành tiền</th><th class="center">Thao tác</th></tr>
 <%  ServiceDetail8[] sds = requestForm.getServiceDetails();
     for (int i = 0; i < sds.length; i++) { ServiceDetail8 d = sds[i]; %>
     <tr>
@@ -94,16 +94,15 @@ Xe tiếp nhận: <span name="lblLicensePlate"><%= esc(car.getLicensePlate()) %>
         <td class="money"><%= money(d.getService().getListedPrice()) %></td>
         <td class="money"><%= money(d.getDiscountAmount()) %></td>
         <td class="money"><%= money(d.getFinalPrice()) %></td>
-        <td><%= d.getDiscountNote() == null ? "" : esc(d.getDiscountNote()) %></td>
         <td class="center"><a href="uiRequestForm8.jsp?delService=<%= i %>" class="btn-small">Xóa</a></td>
     </tr>
 <%  } %>
 </table>
 
-<h3>2. Danh sách Phụ tùng yêu cầu:
+<h3>2. Phụ tùng yêu cầu:
 <input type="submit" name="btnAddPart" value="+ Thêm phụ tùng" class="btn right"></h3>
 <table name="tblPartList" class="data">
-    <tr><th class="center">TT</th><th class="center">Mã</th><th>Tên phụ tùng</th><th class="center">ĐVT</th><th class="center">SL</th><th class="money">Đơn giá</th><th class="money">Giảm giá</th><th class="money">Thành tiền</th><th>Ghi chú KM</th><th class="center">Thao tác</th></tr>
+    <tr><th class="center">TT</th><th class="center">Mã</th><th>Tên phụ tùng</th><th class="center">ĐVT</th><th class="center">SL</th><th class="money">Đơn giá</th><th class="money">Giảm giá</th><th class="money">Thành tiền</th><th class="center">Thao tác</th></tr>
 <%  PartDetail8[] pds = requestForm.getPartDetails();
     for (int i = 0; i < pds.length; i++) { PartDetail8 d = pds[i]; PartVariant8 v = d.getPartVariant(); %>
     <tr>
@@ -115,7 +114,6 @@ Xe tiếp nhận: <span name="lblLicensePlate"><%= esc(car.getLicensePlate()) %>
         <td class="money"><%= money(v.getListedPrice()) %></td>
         <td class="money"><%= money(d.getDiscountAmount()) %></td>
         <td class="money"><%= money(d.getFinalPrice()) %></td>
-        <td><%= d.getDiscountNote() == null ? "" : esc(d.getDiscountNote()) %></td>
         <td class="center"><a href="uiPartSelection8.jsp" class="btn-small edit">Sửa</a> <a href="uiRequestForm8.jsp?delPart=<%= i %>" class="btn-small">Xóa</a></td>
     </tr>
 <%  } %>
