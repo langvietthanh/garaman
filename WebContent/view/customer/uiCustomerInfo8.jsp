@@ -2,14 +2,14 @@
 <%
     request.setCharacterEncoding("UTF-8");
     if (session.getAttribute("selectedDate") == null || session.getAttribute("selectedTimeSlot") == null) {
-        response.sendRedirect("uiDateSelection8.jsp");
+        response.sendRedirect("uiAppointmentSelection8.jsp");
         return;
     }
     String fullName = request.getParameter("txtFullName");
     String phoneNumber = request.getParameter("txtPhoneNumber");
     String msg = null;
 
-    // V3 buoc 22-23: nhan du lieu form, chuyen sang uiBookingConfirmation8.jsp kem fullName, phoneNumber
+    // V3 buoc 21-22: nhan du lieu form, chuyen sang uiBookingConfirmation8.jsp kem fullName, phoneNumber
     if ("POST".equalsIgnoreCase(request.getMethod())) {
         fullName = fullName == null ? "" : fullName.trim();
         phoneNumber = phoneNumber == null ? "" : phoneNumber.trim();
@@ -30,19 +30,25 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Thông tin khách hàng</title>
+<title>Thông tin người đặt lịch</title>
+<link rel="stylesheet" href="../../css/garaman8.css">
 </head>
 <body>
-<h2>Thông tin khách hàng</h2>
-<% if (msg != null) { %><p style="color:red"><%= msg %></p><% } %>
+<div class="page">
+<div class="steps" id="lblStepBar"><span class="done">1. Chọn thời gian</span><span class="on">2. Thông tin</span><span>3. Xác nhận</span></div>
+<h2 id="lblTitle">THÔNG TIN NGƯỜI ĐẶT LỊCH</h2>
+<% if (msg != null) { %><p class="msg-error" id="lblErrorMessage"><%= msg %></p><% } %>
 <form name="customerInfo" action="uiCustomerInfo8.jsp" method="post">
-<table>
-    <tr><td>Họ tên:</td><td><input type="text" name="txtFullName" maxlength="50" value="<%= fullName.replace("\"", "&quot;") %>"></td></tr>
-    <tr><td>Số điện thoại:</td><td><input type="text" name="txtPhoneNumber" maxlength="10" value="<%= phoneNumber.replace("\"", "&quot;") %>"></td></tr>
+<table class="form">
+    <tr><td>Họ tên <span class="required">*</span>:</td><td><input type="text" name="txtFullName" maxlength="50" placeholder="VD: Nguyễn Văn A" autocomplete="name" value="<%= fullName.replace("\"", "&quot;") %>"></td></tr>
+    <tr><td>Số điện thoại <span class="required">*</span>:</td><td><input type="text" name="txtPhoneNumber" maxlength="10" placeholder="VD: 0912345678" inputmode="numeric" autocomplete="tel" value="<%= phoneNumber.replace("\"", "&quot;") %>"></td></tr>
 </table>
-<br>
-<a href="uiTimeSlotSelection8.jsp">Quay lại</a>
-<input type="submit" name="btnContinue" value="Tiếp tục">
+<p class="hint" id="lblRequiredNote">Các trường có dấu <span class="required">*</span> là bắt buộc.</p>
+<div class="actions">
+<input type="button" name="btnBack" value="Quay lại" class="btn left" onclick="location.href='uiAppointmentSelection8.jsp'">
+<input type="submit" name="btnContinue" value="Tiếp tục" class="btn right">
+</div>
 </form>
+</div>
 </body>
 </html>

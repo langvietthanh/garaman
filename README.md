@@ -17,12 +17,12 @@ src/
 WebContent/
   view/                                    (gói view, chia theo tác nhân)
     auth/        Đăng nhập nhân viên: uiLogin8 → doLogin8 (EmployeeDAO8.checkLogin) → sales/uiMainSales8
-    customer/    Module 1 – Đặt lịch hẹn trực tuyến: uiMainMenu8 → uiDateSelection8 → uiTimeSlotSelection8 → uiCustomerInfo8 → uiBookingConfirmation8 → doSaveBooking8
+    customer/    Module 1 – Đặt lịch hẹn trực tuyến: uiMainMenu8 → uiAppointmentSelection8 (chọn ngày + khung giờ trên cùng trang) → uiCustomerInfo8 → uiBookingConfirmation8 → doSaveBooking8
     sales/       Module 2 – Nhận xe vào sửa: uiMainSales8 → uiCustomerSearch8 (→ uiAddNewCustomer8) → uiCarSelection8 (→ uiAddNewCar8) → uiRequestForm8 ⇄ uiServiceSelection8 / uiPartSelection8 / uiTechnicianAssignment8 → doSaveRequestForm8 → uiCarReceipt8; receiveCar8.jspf = hàm dùng chung
     statistic/   thống kê – quản lý (chưa cài đặt)
     warehouse/   kho (chưa cài đặt)
     technician/  kỹ thuật (chưa cài đặt)
-  css/garaman8.css   giao diện dùng chung module 2
+  css/garaman8.css   giao diện dùng chung module 1 và 2
   WEB-INF/web.xml, WEB-INF/lib/mysql-connector-j-8.0.33.jar
 garaman.sql          tạo CSDL + dữ liệu mẫu
 ```

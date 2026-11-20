@@ -6,11 +6,11 @@
     String fullName = request.getParameter("txtFullName");
 
     if (fullName != null) {
-        // V3 buoc 24-29: duoc chuyen tu uiCustomerInfo8.jsp -> khoi tao BookingContact8, Appointment8
+        // V3 buoc 23-28: duoc chuyen tu uiCustomerInfo8.jsp -> khoi tao BookingContact8, Appointment8
         Date selectedDate = (Date) session.getAttribute("selectedDate");
         String selectedTimeSlot = (String) session.getAttribute("selectedTimeSlot");
         if (selectedDate == null || selectedTimeSlot == null) {
-            response.sendRedirect("uiDateSelection8.jsp");
+            response.sendRedirect("uiAppointmentSelection8.jsp");
             return;
         }
         BookingContact8 bookingContact = new BookingContact8(fullName.trim(),
@@ -27,43 +27,49 @@
     boolean saved = "1".equals(request.getParameter("saved"));
     Date at = appointment.getAppointmentTime();
     String start = new SimpleDateFormat("HH:mm").format(at);
-    String end = new SimpleDateFormat("HH:mm").format(new Date(at.getTime() + 30 * 60 * 1000L));
+    String end = new SimpleDateFormat("HH:mm").format(new Date(at.getTime() + 60 * 60 * 1000L));
 %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Xác nhận đặt lịch</title>
+<link rel="stylesheet" href="../../css/garaman8.css">
 </head>
 <body>
-<h2>Xác nhận đặt lịch</h2>
-<table>
+<div class="page">
+<div class="steps" id="lblStepBar"><span class="done">1. Chọn thời gian</span><span class="done">2. Thông tin</span><span class="on">3. Xác nhận</span></div>
+<h2 id="lblTitle">XÁC NHẬN ĐẶT LỊCH</h2>
+<div class="info-box">
+<table class="form">
     <tr><td>Ngày hẹn:</td><td><label name="lblSelectedDate"><%= new SimpleDateFormat("dd/MM/yyyy").format(at) %></label></td></tr>
     <tr><td>Khung giờ:</td><td><label name="lblSelectedTime"><%= start %> – <%= end %></label></td></tr>
     <tr><td>Họ tên:</td><td><label name="lblFullName"><%= appointment.getBookingContact().getFullName().replace("<", "&lt;") %></label></td></tr>
     <tr><td>Số điện thoại:</td><td><label name="lblPhoneNumber"><%= appointment.getBookingContact().getPhoneNumber() %></label></td></tr>
 </table>
-<br>
+</div>
 <% if (saved) {
-       // V3 buoc 40: hien thi thong bao thanh cong; ket thuc phien dat lich
+       // V3 buoc 39: hien thi thong bao thanh cong; ket thuc phien dat lich
        session.removeAttribute("appointment");
        session.removeAttribute("selectedDate");
        session.removeAttribute("selectedTimeSlot");
        session.removeAttribute("timeSlots");
 %>
-<div style="border:1px solid #999; padding:6px">
-    <b>Thông báo:</b><br>
-    <label name="lblSuccessMessage">Đặt lịch thành công, nhân viên sẽ liên hệ xác nhận trong thời gian sớm nhất</label>
+<div class="success-box">
+    [✓] <label name="lblSuccessMessage">Đặt lịch thành công, nhân viên sẽ liên hệ xác nhận trong thời gian sớm nhất</label>
 </div>
-<br>
-<a href="uiMainMenu8.jsp">Về trang chủ</a>
+<div class="actions">
+<input type="button" name="btnHome" value="Về trang chủ" class="btn left" onclick="location.href='uiMainMenu8.jsp'">
+</div>
 <% } else { %>
-<% if ("fail".equals(request.getParameter("err"))) { %><p style="color:red">Lưu lịch hẹn không thành công, vui lòng thử lại.</p><% } %>
-<%-- V3 buoc 31-32: submit sang trang xu li doSaveBooking8.jsp --%>
+<%-- V3 buoc 30-31: submit sang trang xu li doSaveBooking8.jsp --%>
 <form name="bookingConfirmation" action="doSaveBooking8.jsp" method="post">
-    <a href="uiCustomerInfo8.jsp">Quay lại</a>
-    <input type="submit" name="btnConfirmBooking" value="Xác nhận đặt lịch">
+<div class="actions">
+    <input type="button" name="btnBack" value="Quay lại" class="btn left" onclick="location.href='uiCustomerInfo8.jsp'">
+    <input type="submit" name="btnConfirmBooking" value="Xác nhận đặt lịch" class="btn right">
+</div>
 </form>
 <% } %>
+</div>
 </body>
 </html>

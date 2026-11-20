@@ -3,11 +3,16 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Trang chủ khách hàng</title>
+<title>GARAMAN - Đặt lịch hẹn sửa xe</title>
+<link rel="stylesheet" href="../../css/garaman8.css">
 </head>
 <body>
-<h2>Trang chủ khách hàng</h2>
-<%-- V3 buoc 1-2: lien ket bookAppointment goi trang uiDateSelection8.jsp --%>
-<a name="bookAppointment" href="uiDateSelection8.jsp">Đặt lịch hẹn</a>
+<div class="page">
+<h2 id="lblTitle">GARAMAN - ĐẶT LỊCH HẸN SỬA XE</h2>
+<%-- V3 buoc 1-2: lien ket bookAppointment goi trang uiAppointmentSelection8.jsp --%>
+<p style="text-align:center; margin:30px 0">
+<a name="bookAppointment" href="uiAppointmentSelection8.jsp" class="btn btn-big" style="display:inline-block; line-height:64px; text-decoration:none">Đặt lịch hẹn</a>
+</p>
+</div>
 </body>
 </html>
