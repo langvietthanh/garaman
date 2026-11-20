@@ -2,7 +2,7 @@ package model;
 
 import java.util.Date;
 
-/** Lich hen. status chi gom "Chờ xác nhận", "Đã tiếp nhận" (QD-02). */
+/** Lich hen. status chi gom "Chờ xác nhận". */
 public class Appointment8 {
     private int id;
     private Date appointmentTime;

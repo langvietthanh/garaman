@@ -65,7 +65,7 @@ CREATE TABLE tblBookingContact8 (
     PRIMARY KEY (id)
 ) ENGINE=InnoDB;
 
--- status: 'Chờ xác nhận' | 'Đã tiếp nhận' (QD-02, bang trang thai sau Hinh 4.2)
+-- status: 'Chờ xác nhận' (bang trang thai sau Hinh 4.2)
 CREATE TABLE tblAppointment8 (
     id                   INT(10)      NOT NULL AUTO_INCREMENT,
     appointmentTime      TIMESTAMP    NOT NULL,
