@@ -1,0 +1,23 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "GaraMan: Compile",
+            "type": "shell",
+            "command": "javac -encoding UTF-8 -cp 'WebContent/WEB-INF/lib/*' -d WebContent/WEB-INF/classes (Get-ChildItem -Recurse src -Filter *.java).FullName",
+            "options": { "shell": { "executable": "powershell.exe" } },
+            "presentation": { "reveal": "always", "panel": "shared" },
+            "problemMatcher": []
+        },
+        {
+            "label": "GaraMan: Run Tomcat",
+            "type": "shell",
+            "command": "Start-Process powershell -WindowStyle Hidden -ArgumentList '-c','Start-Sleep 8; Start-Process http://localhost:8080/GaraMan/'; ..\\apache-tomcat-9.0.123\\bin\\catalina.bat run",
+            "options": { "shell": { "executable": "powershell.exe" } },
+            "dependsOn": "GaraMan: Compile",
+            "group": { "kind": "build", "isDefault": true },
+            "presentation": { "reveal": "always", "focus": true, "panel": "dedicated" },
+            "problemMatcher": []
+        }
+    ]
+}

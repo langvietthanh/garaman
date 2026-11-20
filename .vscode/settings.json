@@ -8,5 +8,12 @@
     "jsp-support.javaSourcePaths": [
         "src",
         "src/main/java"
+    ],
+    "java.project.sourcePaths": [
+        "src"
+    ],
+    "java.project.outputPath": "build/classes",
+    "java.project.referencedLibraries": [
+        "WebContent/WEB-INF/lib/**/*.jar"
     ]
 }
