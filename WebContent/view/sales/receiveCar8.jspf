@@ -2,10 +2,10 @@
 <%@ page pageEncoding="UTF-8" %>
 <%@ page import="java.util.*, java.text.*, model.*" %>
 <%!
-    /** Dinh dang tien theo chuan Viet Nam: 1290000 -> "1.290.000 đ" (dau cham ngan cach hang nghin). */
+    /** Dinh dang tien theo chuan Viet Nam: 1290000 -> "1.290.000" (dau cham ngan cach hang nghin; don vi (VNĐ) ghi o ten cot). */
     String money(float v) {
         NumberFormat vn = NumberFormat.getNumberInstance(Locale.forLanguageTag("vi-VN"));
-        return vn.format(Math.round(v)) + " đ";
+        return vn.format(Math.round(v));
     }
 
     String code(String prefix, int id) {
@@ -17,20 +17,36 @@
         return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;");
     }
 
-    /** Mo ta giam gia de hien thi o cot "Khuyến mãi". */
-    String discountText(List<Discount8> ks) {
-        if (ks == null || ks.isEmpty()) return "Không áp dụng";
-        StringBuilder sb = new StringBuilder();
-        for (Discount8 k : ks) {
-            if (sb.length() > 0) sb.append("; ");
-            sb.append(k.getDiscountName());
-            if (k.getDiscountConditions() != null) {
-                for (DiscountCondition8 c : k.getDiscountConditions()) {
-                    if (c.getDescription() != null) sb.append(" (").append(c.getDescription()).append(")");
-                }
+    /** Cot "Mức giảm" cua 1 khuyen mai, vd "10% (tối đa 50.000đ)", "20.000đ". */
+    String discountValue(Discount8 k) {
+        if ("Phần trăm".equals(k.getDiscountType())) {
+            String s = Math.round(k.getDiscountValue()) + "%";
+            if (k.getMaxDiscountAmount() > 0) s += " (tối đa " + money(k.getMaxDiscountAmount()) + "đ)";
+            return s;
+        }
+        return money(k.getDiscountValue()) + "đ";
+    }
+
+    /** Cot "Điều kiện áp dụng" cua 1 khuyen mai: muc toi thieu + cac DiscountCondition8 (HTML da escape). */
+    String discountCondition(Discount8 k) {
+        List<String> cs = new ArrayList<String>();
+        boolean hasTotalCond = false;
+        if (k.getDiscountConditions() != null) {
+            for (DiscountCondition8 c : k.getDiscountConditions()) {
+                if ("Tổng tiền".equals(c.getConditionType())) hasTotalCond = true;
+                if (c.getDescription() != null) cs.add(esc(c.getDescription()));
             }
         }
-        return sb.toString();
+        // muc toi thieu chi hien khi chua co dieu kien "Tổng tiền" mo ta dieu nay
+        if (k.getMinApplicableAmount() > 0 && !hasTotalCond) cs.add(0, "Thành tiền từ " + money(k.getMinApplicableAmount()) + "đ");
+        return cs.isEmpty() ? "Không điều kiện" : String.join("; ", cs);
+    }
+
+    /** 3 o Khuyến mãi | Mức giảm | Điều kiện áp dụng cua 1 khuyen mai (k = null: "Không áp dụng"). */
+    String discountCells(Discount8 k) {
+        if (k == null) return "<td>Không áp dụng</td><td></td><td class=\"wrap\"></td>";
+        return "<td>" + esc(k.getDiscountName()) + "</td><td class=\"nowrap\">" + discountValue(k)
+                + "</td><td class=\"wrap\">" + discountCondition(k) + "</td>";
     }
 
     /** Danh sach giam gia cua 1 dich vu/phu tung (co the null) -> mang cho calculatePrice(). */

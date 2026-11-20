@@ -1,10 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="dao.*" %>
 <%@ include file="receiveCar8.jspf" %>
+<%-- ===== THUỘC TÍNH ẨN (khớp design-class-diagram-2: uiAddNewCar8.jsp) ===== --%>
+<%
+    Employee8 currentEmployee = (Employee8) session.getAttribute("currentEmployee");     // nhân viên đăng nhập (auth/doLogin8.jsp)
+    Customer8 selectedCustomer = (Customer8) session.getAttribute("selectedCustomer");   // khách đã chọn (uiCustomerSearch8 / uiAddNewCustomer8)
+    Car8 newCar = null;                                                                  // tạo khi click "Lưu xe mới"
+    CustomerCar8 newCustomerCar = null;                                                  // tạo khi click "Lưu xe mới"
+%>
+<%-- ===== XỬ LÝ ===== --%>
 <%
     request.setCharacterEncoding("UTF-8");
-    Customer8 selectedCustomer = (Customer8) session.getAttribute("selectedCustomer");
-    Employee8 currentEmployee = (Employee8) session.getAttribute("currentEmployee");
     if (currentEmployee == null || selectedCustomer == null) {
         response.sendRedirect("uiMainSales8.jsp");
         return;
@@ -25,13 +31,13 @@
         } else if (year < 1950 || year > thisYear) {
             msg = "Năm sản xuất không hợp lệ.";
         } else {
-            Car8 newCar = new Car8();
+            newCar = new Car8();
             newCar.setLicensePlate(txtLicensePlate.trim().toUpperCase());
             newCar.setBrand(txtBrand.trim());
             newCar.setVehicleType(txtVehicleType == null ? null : txtVehicleType.trim());
             newCar.setColor(txtColor == null ? null : txtColor.trim());
             newCar.setManufacturingYear(year);
-            CustomerCar8 newCustomerCar = new CustomerCar8();
+            newCustomerCar = new CustomerCar8();
             newCustomerCar.setCar(newCar);
             newCustomerCar.setRegistrationDate(new Date());
             CustomerCarDAO8 customerCarDAO = new CustomerCarDAO8();
@@ -76,7 +82,6 @@
     <tr><td>Màu sắc:</td><td><input type="text" name="txtColor" value="<%= esc(txtColor) %>"></td></tr>
     <tr><td>Năm sản xuất <span class="required">*</span>:</td><td><input type="text" name="txtManufacturingYear" value="<%= esc(txtManufacturingYear) %>"></td></tr>
 </table>
-<p class="hint">Các trường có dấu <span class="required">*</span> là bắt buộc.</p>
 <div class="actions">
 <input type="button" name="btnCancel" value="Hủy bỏ" class="btn left" onclick="location.href='uiCarSelection8.jsp'">
 <input type="submit" name="btnSaveCar" value="Lưu xe mới" class="btn right">

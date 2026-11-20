@@ -1,12 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="receiveCar8.jspf" %>
+<%-- ===== THUỘC TÍNH ẨN (khớp design-class-diagram-2: uiRequestForm8.jsp) ===== --%>
+<%
+    Employee8 currentEmployee = (Employee8) session.getAttribute("currentEmployee");                 // nhân viên đăng nhập (auth/doLogin8.jsp)
+    Customer8 selectedCustomer = (Customer8) session.getAttribute("selectedCustomer");               // khách đã chọn (uiCustomerSearch8 / uiAddNewCustomer8)
+    CustomerCar8 selectedCustomerCar = (CustomerCar8) session.getAttribute("selectedCustomerCar");   // xe đã chọn (uiCarSelection8.jsp)
+    RequestForm8 requestForm = (RequestForm8) session.getAttribute("requestForm");                   // phiếu yêu cầu (tạo ở uiCarSelection8.jsp)
+    CarReceipt8 carReceipt = (CarReceipt8) session.getAttribute("carReceipt");                       // biên bản nhận xe (tạo ở uiCarSelection8.jsp)
+%>
+<%-- ===== XỬ LÝ ===== --%>
 <%
     request.setCharacterEncoding("UTF-8");
-    Employee8 currentEmployee = (Employee8) session.getAttribute("currentEmployee");
-    RequestForm8 requestForm = (RequestForm8) session.getAttribute("requestForm");
-    CarReceipt8 carReceipt = (CarReceipt8) session.getAttribute("carReceipt");
-    Customer8 selectedCustomer = (Customer8) session.getAttribute("selectedCustomer");
-    CustomerCar8 selectedCustomerCar = (CustomerCar8) session.getAttribute("selectedCustomerCar");
     if (currentEmployee == null || requestForm == null || carReceipt == null || selectedCustomer == null || selectedCustomerCar == null) {
         response.sendRedirect("uiMainSales8.jsp");
         return;
@@ -74,9 +78,9 @@ Khách hàng: <span name="lblCustomerName"><%= esc(selectedCustomer.getFullName(
  &nbsp;|&nbsp; SĐT: <span name="lblCustomerPhoneNumber"><%= esc(selectedCustomer.getPhoneNumber()) %></span>
  &nbsp;|&nbsp; Địa chỉ: <span name="lblCustomerAddress"><%= esc(selectedCustomer.getAddress()) %></span><br>
 Xe tiếp nhận: <span name="lblLicensePlate"><%= esc(car.getLicensePlate()) %></span>
- (<span name="lblCarBrand"><%= esc(car.getBrand()) %></span> <span name="lblCarModel"><%= esc(car.getVehicleType()) %></span>
+ <span name="lblCarBrand"><%= esc(car.getBrand()) %></span> <span name="lblCarModel"><%= esc(car.getVehicleType()) %></span>
  | Màu: <span name="lblCarColor"><%= esc(car.getColor()) %></span>
- | Năm SX: <span name="lblManufacturingYear"><%= car.getManufacturingYear() %></span>)
+ | Năm SX: <span name="lblManufacturingYear"><%= car.getManufacturingYear() %></span>
 </div>
 <% if (msg != null) { %><p class="msg-error"><%= msg %></p><% } %>
 
@@ -84,7 +88,7 @@ Xe tiếp nhận: <span name="lblLicensePlate"><%= esc(car.getLicensePlate()) %>
 <h3>1. Dịch vụ yêu cầu:
 <input type="submit" name="btnAddService" value="+ Thêm dịch vụ" class="btn right"></h3>
 <table name="tblServiceList" class="data">
-    <tr><th class="center">TT</th><th class="center">Mã</th><th>Tên dịch vụ</th><th class="money">Đơn giá</th><th class="money">Giảm giá</th><th class="money">Thành tiền</th><th class="center">Thao tác</th></tr>
+    <tr><th class="center">TT</th><th class="center">Mã</th><th>Tên dịch vụ</th><th class="money">Đơn giá (VNĐ)</th><th class="money">Giảm giá (VNĐ)</th><th class="money">Thành tiền (VNĐ)</th><th class="center">Thao tác</th></tr>
 <%  ServiceDetail8[] sds = requestForm.getServiceDetails();
     for (int i = 0; i < sds.length; i++) { ServiceDetail8 d = sds[i]; %>
     <tr>
@@ -102,7 +106,7 @@ Xe tiếp nhận: <span name="lblLicensePlate"><%= esc(car.getLicensePlate()) %>
 <h3>2. Phụ tùng yêu cầu:
 <input type="submit" name="btnAddPart" value="+ Thêm phụ tùng" class="btn right"></h3>
 <table name="tblPartList" class="data">
-    <tr><th class="center">TT</th><th class="center">Mã</th><th>Tên phụ tùng</th><th class="center">ĐVT</th><th class="center">SL</th><th class="money">Đơn giá</th><th class="money">Giảm giá</th><th class="money">Thành tiền</th><th class="center">Thao tác</th></tr>
+    <tr><th class="center">TT</th><th class="center">Mã</th><th>Tên phụ tùng</th><th class="center">ĐVT</th><th class="center">SL</th><th class="money">Đơn giá (VNĐ)</th><th class="money">Giảm giá (VNĐ)</th><th class="money">Thành tiền (VNĐ)</th><th class="center">Thao tác</th></tr>
 <%  PartDetail8[] pds = requestForm.getPartDetails();
     for (int i = 0; i < pds.length; i++) { PartDetail8 d = pds[i]; PartVariant8 v = d.getPartVariant(); %>
     <tr>
@@ -139,9 +143,9 @@ Xe tiếp nhận: <span name="lblLicensePlate"><%= esc(car.getLicensePlate()) %>
 <textarea name="txtNotes"><%= esc(carReceipt.getNotes()) %></textarea>
 
 <div class="total-box">
-<span name="lblTotalListedAmount">Tổng niêm yết: <%= money(requestForm.getTotalListedAmount()) %></span>
- &nbsp;|&nbsp; <span name="lblTotalDiscount">Tổng giảm giá: <%= money(requestForm.getTotalDiscount()) %></span>
- &nbsp;|&nbsp; <span name="lblEstimatedTotal">TỔNG TẠM TÍNH: <%= money(requestForm.getEstimatedTotal()) %></span>
+<span name="lblTotalListedAmount">Tổng niêm yết: <%= money(requestForm.getTotalListedAmount()) %> đ</span>
+ &nbsp;|&nbsp; <span name="lblTotalDiscount">Tổng giảm giá: <%= money(requestForm.getTotalDiscount()) %> đ</span>
+ &nbsp;|&nbsp; <span name="lblEstimatedTotal">Tổng tiền tạm tính: <%= money(requestForm.getEstimatedTotal()) %> đ</span>
 </div>
 <div class="actions">
 <input type="button" name="btnCancel" value="Hủy bỏ" class="btn left" onclick="if (confirm('Hủy phiếu yêu cầu đang lập?')) location.href='uiMainSales8.jsp'">

@@ -1,16 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="dao.*" %>
 <%@ include file="receiveCar8.jspf" %>
+<%-- ===== THUỘC TÍNH ẨN (khớp design-class-diagram-2: uiCustomerSearch8.jsp) ===== --%>
+<%
+    Employee8 currentEmployee = (Employee8) session.getAttribute("currentEmployee");   // nhân viên đăng nhập (auth/doLogin8.jsp)
+    Customer8[] customerList = (Customer8[]) session.getAttribute("customerList");     // kết quả CustomerDAO8.searchCustomerByName()
+    Customer8 selectedCustomer = null;                                                 // gán khi click "Xác nhận chọn"
+%>
+<%-- ===== XỬ LÝ ===== --%>
 <%
     request.setCharacterEncoding("UTF-8");
-    Employee8 currentEmployee = (Employee8) session.getAttribute("currentEmployee");
     if (currentEmployee == null) {
         response.sendRedirect("uiMainSales8.jsp");
         return;
     }
     String msg = null;
     String txtCustomerName = request.getParameter("txtCustomerName");
-    Customer8[] customerList = (Customer8[]) session.getAttribute("customerList");
 
     if (request.getParameter("btnSearch") != null) {
         // Ngoai le 6: ho ten khong hop le (rong hoac co chu so/ky tu dac biet)
@@ -25,7 +30,6 @@
         session.setAttribute("customerList", customerList);
     } else if (request.getParameter("btnConfirmSelect") != null) {
         String sel = request.getParameter("selectedCustomer");
-        Customer8 selectedCustomer = null;
         if (sel != null && customerList != null) {
             for (Customer8 c : customerList) if (String.valueOf(c.getId()).equals(sel)) selectedCustomer = c;
         }

@@ -1,9 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="receiveCar8.jspf" %>
+<%-- ===== THUỘC TÍNH ẨN (khớp design-class-diagram-2: uiCarReceipt8.jsp) ===== --%>
 <%
-    Employee8 currentEmployee = (Employee8) session.getAttribute("currentEmployee");
-    CarReceipt8 carReceipt = (CarReceipt8) session.getAttribute("carReceipt");
-    Customer8 selectedCustomer = (Customer8) session.getAttribute("selectedCustomer");
+    Employee8 currentEmployee = (Employee8) session.getAttribute("currentEmployee");     // nhân viên đăng nhập (auth/doLogin8.jsp)
+    Customer8 selectedCustomer = (Customer8) session.getAttribute("selectedCustomer");   // khách đã chọn (uiCustomerSearch8 / uiAddNewCustomer8)
+    CarReceipt8 carReceipt = (CarReceipt8) session.getAttribute("carReceipt");           // biên bản nhận xe (tạo ở uiCarSelection8.jsp)
+%>
+<%-- ===== XỬ LÝ ===== --%>
+<%
     if (currentEmployee == null || carReceipt == null || carReceipt.getId() == 0 || selectedCustomer == null) {
         response.sendRedirect("uiMainSales8.jsp");
         return;
@@ -22,7 +26,7 @@
 </head>
 <body>
 <div class="page">
-<h2>GARAMAN - BIÊN BẢN TIẾP NHẬN XE VÀ BÀN GIAO TÀI SẢN</h2>
+<h2>GARAMAN - BIÊN BẢN TIẾP NHẬN XE</h2>
 <div name="lblSuccessMessage" class="success-box">[✓] Tiếp nhận xe và lưu phiếu yêu cầu thành công!</div>
 <div class="info-box">
 <b>Mã biên bản: <span name="lblReceiptCode"><%= receiptCode %></span>

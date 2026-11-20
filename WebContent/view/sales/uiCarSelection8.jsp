@@ -1,22 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="dao.*" %>
 <%@ include file="receiveCar8.jspf" %>
+<%-- ===== THUỘC TÍNH ẨN (khớp design-class-diagram-2: uiCarSelection8.jsp) ===== --%>
+<%
+    Employee8 currentEmployee = (Employee8) session.getAttribute("currentEmployee");     // nhân viên đăng nhập (auth/doLogin8.jsp)
+    Customer8 selectedCustomer = (Customer8) session.getAttribute("selectedCustomer");   // khách đã chọn (uiCustomerSearch8 / uiAddNewCustomer8)
+    CustomerCar8[] customerCarList = null;                                               // kết quả CustomerCarDAO8.getLinkedCarList()
+    CustomerCar8 selectedCustomerCar = null;                                             // gán khi click "Xác nhận chọn"
+    RequestForm8 requestForm = null;                                                     // tạo khi click "Xác nhận chọn"
+    CarReceipt8 carReceipt = null;                                                       // tạo khi click "Xác nhận chọn"
+%>
+<%-- ===== XỬ LÝ ===== --%>
 <%
     request.setCharacterEncoding("UTF-8");
-    Employee8 currentEmployee = (Employee8) session.getAttribute("currentEmployee");
-    Customer8 selectedCustomer = (Customer8) session.getAttribute("selectedCustomer");
     if (currentEmployee == null || selectedCustomer == null) {
         response.sendRedirect("uiMainSales8.jsp");
         return;
     }
     String msg = null;
     // Sequence: uiCarSelection8 -> CustomerCarDAO8.getLinkedCarList()
-    CustomerCar8[] customerCarList = new CustomerCarDAO8().getLinkedCarList(selectedCustomer);
+    customerCarList = new CustomerCarDAO8().getLinkedCarList(selectedCustomer);
     session.setAttribute("customerCarList", customerCarList);
 
     if (request.getParameter("btnConfirmSelect") != null) {
         String sel = request.getParameter("selectedCustomerCar");
-        CustomerCar8 selectedCustomerCar = null;
         if (sel != null) {
             for (CustomerCar8 cc : customerCarList) if (String.valueOf(cc.getId()).equals(sel)) selectedCustomerCar = cc;
         }
@@ -25,14 +32,14 @@
         } else {
             session.setAttribute("selectedCustomerCar", selectedCustomerCar);
             // Khoi tao phieu yeu cau nhap + phieu nhan xe cho uiRequestForm8
-            RequestForm8 requestForm = new RequestForm8();
+            requestForm = new RequestForm8();
             requestForm.setProcessingStatus("Nháp");
             requestForm.setCreatedAt(new Date());
             requestForm.setEmployee(currentEmployee);
             requestForm.setServiceDetails(new ServiceDetail8[0]);
             requestForm.setPartDetails(new PartDetail8[0]);
             requestForm.setAssignmentDetails(new AssignmentDetail8[0]);
-            CarReceipt8 carReceipt = new CarReceipt8();
+            carReceipt = new CarReceipt8();
             carReceipt.setCustomerCar(selectedCustomerCar);
             carReceipt.setRequestForm(requestForm);
             session.setAttribute("requestForm", requestForm);

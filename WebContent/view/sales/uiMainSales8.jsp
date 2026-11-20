@@ -1,7 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="model.*" %>
+<%-- ===== THUỘC TÍNH ẨN (khớp design-class-diagram-2: uiMainSales8.jsp) ===== --%>
 <%
-    Employee8 currentEmployee = (Employee8) session.getAttribute("currentEmployee");
+    Employee8 currentEmployee = (Employee8) session.getAttribute("currentEmployee");   // nhân viên đăng nhập (auth/doLogin8.jsp)
+%>
+<%-- ===== XỬ LÝ ===== --%>
+<%
     // Nhan vien do doLogin8.jsp dua vao session; chua dang nhap hoac khong phai ban hang -> ve trang dang nhap
     if (currentEmployee == null || !"Bán hàng".equals(currentEmployee.getPosition())) {
         response.sendRedirect("../auth/uiLogin8.jsp");

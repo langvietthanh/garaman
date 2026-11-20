@@ -196,3 +196,5 @@ input[type=radio], input[type=checkbox] {
 .search-row .btn + .btn { color: #2563eb; background-color: white; }   /* nut thu 2 canh o tim kiem (+ Them moi): kieu vien */
 table.data td:last-child { white-space: nowrap; }                       /* cot Thao tac/Chon: khong xuong dong */
 .required  { color: #dc2626; font-weight: 700; }   /* dau * truong bat buoc */
+.nowrap    { white-space: nowrap; }                /* o khong xuong dong (cot Muc giam) */
+table.data td.wrap { white-space: normal; }        /* o Dieu kien ap dung: duoc xuong dong (ke ca o cuoi hang con) */

@@ -1,17 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="dao.*" %>
 <%@ include file="receiveCar8.jspf" %>
+<%-- ===== THUỘC TÍNH ẨN (khớp design-class-diagram-2: uiTechnicianAssignment8.jsp) ===== --%>
+<%
+    Employee8 currentEmployee = (Employee8) session.getAttribute("currentEmployee");   // nhân viên đăng nhập (auth/doLogin8.jsp)
+    RequestForm8 requestForm = (RequestForm8) session.getAttribute("requestForm");     // phiếu yêu cầu (tạo ở uiCarSelection8.jsp)
+    Technician8[] technicianList = null;                                               // kết quả TechnicianDAO8.getTechnicianList()
+%>
+<%-- ===== XỬ LÝ ===== --%>
 <%
     request.setCharacterEncoding("UTF-8");
-    RequestForm8 requestForm = (RequestForm8) session.getAttribute("requestForm");
-    Employee8 currentEmployee = (Employee8) session.getAttribute("currentEmployee");
     if (currentEmployee == null || requestForm == null) {
         response.sendRedirect("uiMainSales8.jsp");
         return;
     }
     String msg = null;
     // Sequence: TechnicianDAO8.getTechnicianList() - ky thuat vien dang ranh
-    Technician8[] technicianList = new TechnicianDAO8().getTechnicianList();
+    technicianList = new TechnicianDAO8().getTechnicianList();
     session.setAttribute("technicianList", technicianList);
     Set<Integer> assigned = new HashSet<Integer>();
     for (AssignmentDetail8 a : requestForm.getAssignmentDetails()) assigned.add(a.getTechnician().getId());

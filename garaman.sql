@@ -302,10 +302,10 @@ INSERT INTO tblWorkSchedule8 (id, workDate, openTime, closeTime) VALUES
  (14, CURDATE() + INTERVAL 14 DAY, '08:00:00', '17:00:00');
 DELETE FROM tblWorkSchedule8 WHERE DAYOFWEEK(workDate) = 1;
 
--- Mot lich hen co san de thay khung gio "Da co khach dat"
+-- Mot lich hen co san de thay khung gio "Da co khach dat" (khung 1 tieng: gio bat dau la gio chan)
 INSERT INTO tblBookingContact8 (fullName, phoneNumber) VALUES ('Trần Thị B', '0988765432');
 INSERT INTO tblAppointment8 (appointmentTime, status, tblCustomer8id, tblWorkSchedule8id, tblBookingContact8id)
-SELECT TIMESTAMP(w.workDate, '08:30:00'), 'Chờ xác nhận', NULL, w.id, LAST_INSERT_ID()
+SELECT TIMESTAMP(w.workDate, '09:00:00'), 'Chờ xác nhận', NULL, w.id, LAST_INSERT_ID()
 FROM tblWorkSchedule8 w ORDER BY w.workDate LIMIT 1;
 
 -- ===== Du lieu mau Module 2 (Nhan xe vao sua) - da dang de demo =====
@@ -622,7 +622,7 @@ INSERT INTO tblDiscount8 (id, discountName, discountType, discountValue, applica
  (7, 'Khuyến mãi Tết (đã hết hạn)',      'Phần trăm', 20,     'Dịch vụ',  300000, 0,       CURDATE() - INTERVAL 60 DAY, CURDATE() - INTERVAL 30 DAY),
  (8, 'Black Friday (sắp diễn ra)',       'Phần trăm', 25,     'Phụ tùng', 300000, 0,       CURDATE() + INTERVAL 10 DAY, CURDATE() + INTERVAL 13 DAY);
 INSERT INTO tblDiscountCondition8 (description, conditionType, operator, targetValue, tblDiscount8id) VALUES
- ('Mua từ 2 can trở lên', 'Số lượng', '>=', 2, 2),
+ ('Mua từ 2 sản phẩm trở lên', 'Số lượng', '>=', 2, 2),
  ('Thành tiền từ 300.000đ', 'Tổng tiền', '>=', 300000, 3),
  ('Mua từ 4 chiếc trở lên', 'Số lượng', '>=', 4, 5);
 INSERT INTO tblServiceDiscountDetail8 (tblDiscount8id, tblService8id) VALUES (1, 2), (1, 3), (3, 4), (3, 5), (4, 14), (4, 15), (7, 1), (7, 6);

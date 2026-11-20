@@ -1,18 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="dao.*" %>
 <%@ include file="receiveCar8.jspf" %>
+<%-- ===== THUỘC TÍNH ẨN (khớp design-class-diagram-2: uiPartSelection8.jsp) ===== --%>
+<%
+    Employee8 currentEmployee = (Employee8) session.getAttribute("currentEmployee");                                       // nhân viên đăng nhập (auth/doLogin8.jsp)
+    RequestForm8 requestForm = (RequestForm8) session.getAttribute("requestForm");                                         // phiếu yêu cầu (tạo ở uiCarSelection8.jsp)
+    PartVariant8[] partList = (PartVariant8[]) session.getAttribute("partList");                                           // kết quả PartVariantDAO8.getParts()
+    @SuppressWarnings("unchecked")
+    Map<Integer, List<Discount8>> partDiscounts = (Map<Integer, List<Discount8>>) session.getAttribute("partDiscounts");   // khuyến mãi theo mã phụ tùng, gom từ DiscountDAO8.getPartDiscount()
+%>
+<%-- ===== XỬ LÝ ===== --%>
 <%
     request.setCharacterEncoding("UTF-8");
-    RequestForm8 requestForm = (RequestForm8) session.getAttribute("requestForm");
-    Employee8 currentEmployee = (Employee8) session.getAttribute("currentEmployee");
     if (currentEmployee == null || requestForm == null) {
         response.sendRedirect("uiMainSales8.jsp");
         return;
     }
     String msg = null;
-    PartVariant8[] partList = (PartVariant8[]) session.getAttribute("partList");
-    @SuppressWarnings("unchecked")
-    Map<Integer, List<Discount8>> partDiscounts = (Map<Integer, List<Discount8>>) session.getAttribute("partDiscounts");
     if (partList == null || request.getParameter("btnSearch") == null && request.getParameter("btnConfirmAdd") == null) {
         // Sequence: PartVariantDAO8.getParts() roi DiscountDAO8.getPartDiscount()
         partList = new PartVariantDAO8().getParts();
@@ -77,7 +81,14 @@
         String name = (v.getSparePart().getPartName() + " " + v.getBrand()).toLowerCase();
         if (name.contains(txtPartName.trim().toLowerCase())) shown.add(v);
     }
-    if (shown.isEmpty() && msg == null) msg = "Không tìm thấy phụ tùng phù hợp.";
+    // Bo loc: chi hien phu tung da co trong phieu; sap xep theo don gia
+    boolean chkSelectedOnly = request.getParameter("chkSelectedOnly") != null;
+    String cboSort = request.getParameter("cboSort");
+    if (cboSort == null) cboSort = "";
+    if (chkSelectedOnly) shown.removeIf(v -> !inForm.containsKey(v.getId()));
+    if ("asc".equals(cboSort)) shown.sort(Comparator.comparing(PartVariant8::getListedPrice));
+    else if ("desc".equals(cboSort)) shown.sort(Comparator.comparing(PartVariant8::getListedPrice).reversed());
+    if (shown.isEmpty() && msg == null && !chkSelectedOnly) msg = "Không tìm thấy phụ tùng phù hợp.";
 %>
 <!DOCTYPE html>
 <html>
@@ -95,24 +106,38 @@
 Tên phụ tùng: <input type="text" name="txtPartName" value="<%= esc(txtPartName) %>">
 <input type="submit" name="btnSearch" value="Tìm kiếm" class="btn">
 </div>
+<div class="search-row">
+<label><input type="checkbox" name="chkSelectedOnly" onchange="this.form.submit()" <%= chkSelectedOnly ? "checked" : "" %>> Chỉ hiện đã chọn</label>
+&nbsp;&nbsp; Sắp xếp theo đơn giá:
+<select name="cboSort" onchange="this.form.submit()">
+    <option value="" <%= cboSort.isEmpty() ? "selected" : "" %>>Mặc định</option>
+    <option value="asc" <%= "asc".equals(cboSort) ? "selected" : "" %>>Tăng dần</option>
+    <option value="desc" <%= "desc".equals(cboSort) ? "selected" : "" %>>Giảm dần</option>
+</select>
+</div>
 <table name="tblPartList" class="data">
-    <tr><th class="center">TT</th><th class="center">Mã</th><th>Tên phụ tùng</th><th class="center">Tồn</th><th class="center">ĐVT</th><th class="money">Đơn giá</th><th>Khuyến mãi áp dụng</th><th class="center">SL <span class="required">*</span></th><th class="center">Chọn</th></tr>
+    <tr><th class="center">TT</th><th class="center">Mã</th><th>Tên phụ tùng</th><th class="center">Tồn</th><th class="center">ĐVT</th><th class="money">Đơn giá (VNĐ)</th><th>Khuyến mãi</th><th>Mức giảm</th><th>Điều kiện áp dụng</th><th class="center">SL <span class="required">*</span></th><th class="center">Chọn</th></tr>
 <%  for (int i = 0; i < shown.size(); i++) {
         PartVariant8 v = shown.get(i);
         boolean soldOut = v.getStockQuantity() <= 0;
-        Integer q = inForm.get(v.getId()); %>
+        Integer q = inForm.get(v.getId());
+        List<Discount8> ds = partDiscounts.get(v.getId());
+        int n = (ds == null || ds.isEmpty()) ? 1 : ds.size();   // moi khuyen mai 1 hang con; o cua phu tung gop doc (rowspan) %>
     <tr>
-        <td class="center"><%= i + 1 %></td>
-        <td class="center"><%= code("PT", v.getId()) %></td>
-        <td><%= esc(v.getSparePart().getPartName()) %> - <%= esc(v.getBrand()) %></td>
-        <td class="center"><% if (soldOut) { %><span class="text-red">Hết hàng</span><% } else { %><%= v.getStockQuantity() %><% } %></td>
-        <td class="center"><%= esc(v.getSparePart().getUnit()) %></td>
-        <td class="money"><%= money(v.getListedPrice()) %></td>
-        <td><%= esc(discountText(partDiscounts.get(v.getId()))) %></td>
-        <td class="center"><input type="number" name="txtQuantity_<%= v.getId() %>" min="1" max="<%= v.getStockQuantity() %>"
+        <td class="center" rowspan="<%= n %>"><%= i + 1 %></td>
+        <td class="center" rowspan="<%= n %>"><%= code("PT", v.getId()) %></td>
+        <td rowspan="<%= n %>"><%= esc(v.getSparePart().getPartName()) %> - <%= esc(v.getBrand()) %></td>
+        <td class="center" rowspan="<%= n %>"><% if (soldOut) { %><span class="text-red">Hết hàng</span><% } else { %><%= v.getStockQuantity() %><% } %></td>
+        <td class="center" rowspan="<%= n %>"><%= esc(v.getSparePart().getUnit()) %></td>
+        <td class="money" rowspan="<%= n %>"><%= money(v.getListedPrice()) %></td>
+        <%= discountCells(ds == null || ds.isEmpty() ? null : ds.get(0)) %>
+        <td class="center" rowspan="<%= n %>"><input type="number" name="txtQuantity_<%= v.getId() %>" min="1" max="<%= v.getStockQuantity() %>"
              value="<%= q == null ? "" : q %>" <%= soldOut ? "disabled" : "" %>></td>
-        <td class="center"><input type="checkbox" name="selectedPart" value="<%= v.getId() %>" <%= soldOut ? "disabled" : "" %> <%= q != null ? "checked" : "" %>></td>
+        <td class="center" rowspan="<%= n %>"><input type="checkbox" name="selectedPart" value="<%= v.getId() %>" <%= soldOut ? "disabled" : "" %> <%= q != null ? "checked" : "" %>></td>
     </tr>
+<%      for (int k = 1; k < n; k++) { %>
+    <tr><%= discountCells(ds.get(k)) %></tr>
+<%      } %>
 <%  } %>
 </table>
 <div class="actions">

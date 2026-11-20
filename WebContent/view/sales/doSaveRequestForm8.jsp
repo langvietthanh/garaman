@@ -1,10 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="dao.*, model.*, java.util.*" %>
+<%-- ===== THUỘC TÍNH ẨN (khớp design-class-diagram-2: doSaveRequestForm8.jsp) ===== --%>
+<%
+    Employee8 currentEmployee = (Employee8) session.getAttribute("currentEmployee");   // nhân viên đăng nhập (auth/doLogin8.jsp)
+    RequestForm8 requestForm = (RequestForm8) session.getAttribute("requestForm");     // phiếu yêu cầu (tạo ở uiCarSelection8.jsp)
+    CarReceipt8 carReceipt = (CarReceipt8) session.getAttribute("carReceipt");         // biên bản nhận xe (tạo ở uiCarSelection8.jsp)
+%>
+<%-- ===== XỬ LÝ ===== --%>
 <%
     request.setCharacterEncoding("UTF-8");
-    Employee8 currentEmployee = (Employee8) session.getAttribute("currentEmployee");
-    RequestForm8 requestForm = (RequestForm8) session.getAttribute("requestForm");
-    CarReceipt8 carReceipt = (CarReceipt8) session.getAttribute("carReceipt");
     if (currentEmployee == null || requestForm == null || carReceipt == null || !"POST".equalsIgnoreCase(request.getMethod())) {
         response.sendRedirect("uiMainSales8.jsp");
         return;
